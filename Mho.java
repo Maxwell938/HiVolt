@@ -14,9 +14,9 @@ public class Mho {
 	{
 		return arr[y+1][x+1] == value;
 	}
-	public double dis(int x, int y)
+	public int dis(int x, int y)
 	{
-		return Math.sqrt(x*x + y*y);
+		return x*x + y*y;
 	}
 	public void moves(int x1, int y1, int arr[][])
 	{
@@ -24,7 +24,6 @@ public class Mho {
 		int dy = y1-y;
 		int tempx = x;
 		int tempy = y;
-		double slope = (double) (double)dy/(double)dx;
 		if (Math.abs(dx) == Math.abs(dy))
 		{
 			if (dx > 0)
@@ -51,9 +50,12 @@ public class Mho {
 					tempy--;
 				}
 			}
-			x = tempx;
-			y = tempy;
-			return;
+			if (!check(tempx, tempy, 2, arr))
+			{
+				x = tempx;
+				y = tempy;
+				return;
+			}	
 		} 
 		else if (Math.abs(dy) == 0)
 		{
@@ -65,9 +67,12 @@ public class Mho {
 			{
 				tempx--;
 			}
-			x = tempx;
-			y = tempy;
-			return;
+			if (!check(tempx, tempy, 2, arr))
+			{
+				x = tempx;
+				y = tempy;
+				return;
+			}	
 		}
 		else if (Math.abs(dx) == 0)
 		{
@@ -79,25 +84,28 @@ public class Mho {
 			{
 				tempy--;
 			}
-			x = tempx;
-			y = tempy;
-			return;
+			if (!check(tempx, tempy, 2, arr))
+			{
+				x = tempx;
+				y = tempy;
+				return;
+			}	
 		}
 		int dxx[] = new int[] {1,1,0,-1,-1,-1,0,1};
 		int dyy[] = new int[] {0,1,1,1,0,-1,-1,-1};
-		double dis[] = new double[8];
+		int dis[] = new int[8];
 		for (int i =0; i < 8; i++)
 		{
 			int tempx1 = x + dxx[i];
 			int tempy1 = y + dyy[i];
 			if (check(tempx1,tempy1,0,arr))
 			{
-				double dist = dis(tempx1-x, tempy1-y);
+				int dist = dis(Math.abs(tempx1-x1), Math.abs(tempy1-y1));
 				dis[i] = dist;
 			}
 			else
 			{
-				dis[i] = -2.0;
+				dis[i] = -2;
 			}
 		}
 		double min = Integer.MAX_VALUE;
