@@ -5,10 +5,5 @@ public class Main {
 	{
 		Scanner input = new Scanner(System.in);
 		Board b = new Board();
-		while (true)
-		{
-			char Char = input.next().charAt(0);
-			b.process(Char);
-		}
 	}
 }
