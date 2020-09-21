@@ -6,11 +6,11 @@ import java.awt.*;
 //import javax.sound.*;
 public class Board extends JFrame{ //implements KeyListener{
 	Random r= new Random();
-	JFrame f = new JFrame();
-	JFrame f2 = new JFrame();
-	JFrame f3 = new JFrame();
-	JFrame f4 = new JFrame();
-	JFrame thx = new JFrame();;
+	JFrame f;
+	JFrame f2;
+	JFrame f3;
+	JFrame f4;
+	JFrame f5;
 	Mho Mhos[];
 	Player p1;
 	Fence fence[];
@@ -18,17 +18,49 @@ public class Board extends JFrame{ //implements KeyListener{
 	JTextField txt;
 	JLabel input;
 	JPanel panel;
+	JButton jbut;
+	JButton jbut2;
 	int arr[][] = new int[12][12];
 	public JButton arr2[][];
 	boolean gameover = false;
-	public Board(){}
+	public Board(){
+		f = new JFrame();
+		f2 = new JFrame();
+		f3 = new JFrame();
+		f4 = new JFrame();
+		f5 = new JFrame();
+		f3 = new JFrame();
+		f3.setSize(800, 800);
+		f3.setLayout(new GridLayout(2,1));
+		f3.setResizable(false);
+		jbut = new JButton();
+		jbut2 = new JButton();
+		ImageIcon imageIcon = new ImageIcon("D:/Start.jpg");
+		Image image = imageIcon.getImage();
+		Image image2 = image.getScaledInstance(1000, 800,  java.awt.Image.SCALE_SMOOTH);
+		jbut.setIcon(new ImageIcon(image2));
+		ImageIcon imageIcon2 = new ImageIcon("D:/Quit.jpg");
+		Image image3 = imageIcon2.getImage();
+		Image image4 = image3.getScaledInstance(800, 800,  java.awt.Image.SCALE_SMOOTH);
+		jbut2.setIcon(new ImageIcon(image4));
+		jbut.addActionListener(new Click());
+		jbut2.addActionListener(new Click());
+		f3.add(jbut);
+		f3.add(jbut2);
+		f3.setVisible(true);
+	}
 	public void initallize()
 	{
+		f = new JFrame();
+		f2 = new JFrame();
+		f3 = new JFrame();
+		f4 = new JFrame();
+		f5 = new JFrame();
 		arr2 = new JButton[12][12];
 		f.setSize(800, 800);
 		f.setLayout(new GridLayout(12,12));
 		f.setResizable(false);
-		f.setTitle("Moves: 0");
+		f.setTitle("Moves: 0; Mhos Left: 12/12");
 		for (int i =0;i<12; i++)
 		{
 			for (int ii =0; ii <12; ii++)
@@ -43,7 +75,12 @@ public class Board extends JFrame{ //implements KeyListener{
 						String str = "";
 						str += e.getKeyChar();
 						str = str.toUpperCase();
-						process(str.charAt(0));
+						try {
+							process(str.charAt(0));
+						} catch (InterruptedException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 					}
 					@Override
 					public void keyTyped(KeyEvent e) {}
@@ -144,7 +181,7 @@ public class Board extends JFrame{ //implements KeyListener{
 			return false;
 		return true;
 	}
-	public void process(char keyPressed)
+	public void process(char keyPressed) throws InterruptedException
 	{
 		arr2[p1.y+1][p1.x+1].setIcon(new ImageIcon());
 		p1.move(keyPressed);
@@ -193,7 +230,7 @@ public class Board extends JFrame{ //implements KeyListener{
 		{
 			if (Mhos[i].alive) alldead = false;
 		}
-		if (alldead || p1.moves >= 12)
+		if (alldead)
 		{
 			gamewin();
 			return;
@@ -247,13 +284,31 @@ public class Board extends JFrame{ //implements KeyListener{
 	    txt = new JTextField(5);
 	    txt.addActionListener(new Listener());
 	    panel = new JPanel();
-	    panel.setPreferredSize (new Dimension(500, 500));
+	    panel.setPreferredSize (new Dimension(500, 75));
         panel.setBackground (Color.white);
         panel.add (input);
         panel.add (txt);
         f4.getContentPane().add(panel);
         f4.pack();
         f4.setVisible(true);
+	}
+	public void bye()
+	{
+		f5.setSize(800, 800);
+		f5.setLayout(new GridLayout(1,1));
+		f5.setResizable(false);
+		JButton jj = new JButton();
+		ImageIcon imageIcon5 = new ImageIcon("D:/thx.jpg");
+		Image image5 = imageIcon5.getImage();
+		Image imagef = image5.getScaledInstance(800, 800,  java.awt.Image.SCALE_SMOOTH);
+	    ImageIcon img = new ImageIcon(imagef);
+	    jj.setIcon(img);
+	    f5.add(jj);
+	    f.setVisible(false);
+	    f2.setVisible(false);
+	    f3.setVisible(false);
+	    f4.setVisible(false);
+	    f5.setVisible(true);
 	}
 	class Listener implements ActionListener
 	{
@@ -264,36 +319,41 @@ public class Board extends JFrame{ //implements KeyListener{
 				f.setVisible(false);
 				f2.setVisible(false);
 				f3.setVisible(false);
+				f4.setVisible(false);
+				f5.setVisible(false);
 				initallize();
 			}
 			else if(text.equals("n"))
 			{
-				JButton jj = new JButton();
-				ImageIcon imageIcon5 = new ImageIcon("D:/thx.jpg");
-				Image image5 = imageIcon5.getImage();
-				Image imagef = image5.getScaledInstance(800, 800,  java.awt.Image.SCALE_SMOOTH);
-			    ImageIcon img = new ImageIcon(imagef);
-			    jj.setIcon(new ImageIcon());
-				thx.setSize(800, 800);
-				thx.setLayout(new GridLayout(1,1));
-				thx.setResizable(false);
-			    thx.add(jj);
-			    f.setVisible(false);
-			    f2.setVisible(false);
-			    f3.setVisible(false);
-			    f4.setVisible(false);
-			    thx.setVisible(true);
-				try {
-					Thread.sleep(4000);
-				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			    System.exit(0);
+				bye();
 			}
 			else
 			{
 				input = new JLabel("Invalid input. Try again. (y for yes and n for no)");
+			    JPanel panel2 = new JPanel();
+			    f4 = new JFrame();
+			    panel2.setPreferredSize (new Dimension(200, 100));
+		        panel2.setBackground (Color.white);
+		        panel2.add (input);
+		        panel2.add (txt);
+		        f4.getContentPane().add(panel2);
+		        f4.pack();
+		        f4.setVisible(true);
+			}
+		}
+	}
+	class Click implements ActionListener
+	{
+		public void actionPerformed(ActionEvent e) {
+			if (e.getSource() == jbut)
+			{
+				f3.setVisible(false);
+				initallize();
+			}
+			else if(e.getSource() == jbut2)
+			{
+				f3.setVisible(false);
+				bye();
 			}
 		}
 	}
